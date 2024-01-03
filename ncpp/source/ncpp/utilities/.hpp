@@ -87,10 +87,15 @@ namespace ncpp {
 #include <ncpp/utilities/value_type.hpp>
 #include <ncpp/utilities/item_type.hpp>
 #include <ncpp/utilities/node_type.hpp>
+#include <ncpp/utilities/iterator_type.hpp>
 
 #include <ncpp/utilities/mem_wrap.hpp>
 #include <ncpp/utilities/no_constructor.hpp>
 
 #include <ncpp/utilities/safe_initializer_list.hpp>
+
+#include <ncpp/utilities/cpass.hpp>
+
+#include <ncpp/utilities/magic.hpp>
 
 #pragma endregion
