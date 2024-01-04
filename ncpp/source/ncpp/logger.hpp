@@ -1,9 +1,8 @@
 #pragma once
 
-/**
- *  @file ncpp/utilities/magic.hpp
- *  @brief Implements magic.
- */
+/** @file ncpp/logger.hpp
+*	@brief Implement logger.
+*/
 
 
 
@@ -23,17 +22,11 @@
 
 #pragma region Includes
 
-////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <ncpp/prerequisites.hpp>
-
-////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////
-
-#include <ncpp/containers/pack.hpp>
 
 #pragma endregion
 
@@ -53,35 +46,23 @@
 
 
 
-namespace ncpp::utilities::internal {
+namespace ncpp {
 
-    template<typename... F__>
-    struct TF_magic_type_first_part_helper {
+    template<typename F_char__ = char>
+    class TF_logger {
 
-        using F = containers::TF_pack<F__...>;
-
-    };
-    template<typename F_return__, typename... F_args__>
-    struct TF_magic_type_first_part_helper<F_return__(F_args__...)> {
-
-        using F = F_return__;
-
-    };
-    template<typename F_array__, auto array_arg__>
-    struct TF_magic_type_first_part_helper<F_array__[array_arg__]> {
-
-        using F = F_array__;
+    public:
+        TF_logger() {
+        }
+        ~TF_logger() {
+        }
 
     };
 
-    template<typename... F__>
-    using TF_magic_type_first_part = typename TF_magic_type_first_part_helper<F__...>::F;
+
+
+    using F_logger = TF_logger<>;
+    using F_wlogger = TF_logger<wchar_t>;
 
 }
 
-#define NCPP_MAGIC_EXPAND(MagicType) NCPP_EXPAND(NCPP_MA MagicType)
-
-#define NCPP_MAGIC_TYPE_CAST_FIRST_PART(MagicType) ncpp::utilities::internal::TF_magic_type_first_part<NCPP_EXPAND(NCPP_PACK MagicType)>
-#define NCPP_MAGIC_TYPE_CAST_SECOND_PART(MagicType) NCPP_EXPAND(NCPP_MA_IGNORE MagicType)
-
-#define NCPP_MAGIC(MagicType, ...) NCPP_MAGIC_TYPE_CAST_FIRST_PART(MagicType) __VA_ARGS__ NCPP_MAGIC_TYPE_CAST_SECOND_PART(MagicType)
