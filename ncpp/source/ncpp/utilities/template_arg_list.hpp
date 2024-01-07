@@ -1,8 +1,8 @@
 #pragma once
 
 /**
- *  @file ncpp/utilities/template_arg_list.hpp
- *  @brief Implements template_arg_list_t.
+ *  @file ncpp/utilities/template_targ_list.hpp
+ *  @brief Implements template_targ_list_t.
  */
 
 
@@ -33,9 +33,9 @@
 ////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
 
-#include <ncpp/utilities/nth_template_arg.hpp>
-#include <ncpp/utilities/first_template_arg.hpp>
-#include <ncpp/utilities/last_template_arg.hpp>
+#include <ncpp/utilities/nth_template_targ.hpp>
+#include <ncpp/utilities/first_template_targ.hpp>
+#include <ncpp/utilities/last_template_targ.hpp>
 
 #pragma endregion
 
@@ -60,7 +60,7 @@ namespace ncpp {
     namespace utilities {
 
         template<typename... F_args__>
-        struct TF_template_arg_list;
+        struct TF_template_targ_list;
 
 
 
@@ -215,24 +215,24 @@ namespace ncpp {
 
 
             template<typename... F__>
-            struct TF_template_arg_list_first {
+            struct TF_template_targ_list_first {
 
-                using F_first = TF_nth_template_arg<0, F__...>;
+                using F_first = TF_nth_template_targ<0, F__...>;
 
             };
             template<>
-            struct TF_template_arg_list_first<> {
+            struct TF_template_targ_list_first<> {
 
             };
 
             template<typename... F__>
-            struct TF_template_arg_list_last {
+            struct TF_template_targ_list_last {
 
-                using F_last = TF_nth_template_arg<(sizeof...(F__) - 1), F__...>;
+                using F_last = TF_nth_template_targ<(sizeof...(F__) - 1), F__...>;
 
             };
             template<>
-            struct TF_template_arg_list_last<> {
+            struct TF_template_targ_list_last<> {
 
             };
 
@@ -255,15 +255,15 @@ namespace ncpp {
 
 
         template<typename... F_args__>
-        struct TF_template_arg_list :
-            public internal::TF_template_arg_list_first<F_args__...>,
-            public internal::TF_template_arg_list_last<F_args__...>
+        struct TF_template_targ_list :
+            public internal::TF_template_targ_list_first<F_args__...>,
+            public internal::TF_template_targ_list_last<F_args__...>
         {
 
         public:
-            using F_this = TF_template_arg_list<F_args__...>;
+            using F_this = TF_template_targ_list<F_args__...>;
 
-            NCPP_FORCE_INLINE TF_template_arg_list() noexcept {}
+            NCPP_FORCE_INLINE TF_template_targ_list() noexcept {}
 
             ////////////////////////////////////////////////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////////////////////
@@ -282,9 +282,9 @@ namespace ncpp {
             struct TF_combine_helper_internal;
 
             template<typename... F_args2__>
-            struct TF_combine_helper_internal<TF_template_arg_list<F_args2__...>>{
+            struct TF_combine_helper_internal<TF_template_targ_list<F_args2__...>>{
 
-                using F = TF_template_arg_list<F_args__..., F_args2__...>;
+                using F = TF_template_targ_list<F_args__..., F_args2__...>;
 
             };
 
@@ -298,7 +298,7 @@ namespace ncpp {
 
                 static_assert((index__ < count), "out of bound");
 
-                using F = TF_nth_template_arg<index__, F_args__...>;
+                using F = TF_nth_template_targ<index__, F_args__...>;
 
             };
 
@@ -314,7 +314,7 @@ namespace ncpp {
             using TF_combine = typename TF_combine_helper_internal<F__>::F;
 
             template<typename... F_args2__>
-            using TF_extends = TF_combine<TF_template_arg_list<F_args2__...>>;
+            using TF_extends = TF_combine<TF_template_targ_list<F_args2__...>>;
 
             ////////////////////////////////////////////////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////////////////////
@@ -322,10 +322,10 @@ namespace ncpp {
 
         public:
             template<sz count__>
-            using TF_remove_heads = TF_remove_head_template_args<count__, F_args__...>;
+            using TF_remove_heads = TF_remove_head_template_targs<count__, F_args__...>;
 
             template<sz count__>
-            using TF_remove_tails = TF_remove_tail_template_args<count__, F_args__...>;
+            using TF_remove_tails = TF_remove_tail_template_targs<count__, F_args__...>;
 
             ////////////////////////////////////////////////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////////////////////
@@ -388,10 +388,10 @@ namespace ncpp {
                 using F_prev_list = typename TF_filter_helper_internal<index__ - 1, TF_filter_semantics__>::F;
 
                 using F = F_prev_list::template TF_combine<
-                    TF_nth_template_arg<
+                    TF_nth_template_targ<
                         internal::T_filter_single<F_current_arg, TF_filter_semantics__>,
-                        TF_template_arg_list<>,
-                        TF_template_arg_list<internal::TF_safe_filter_single<F_current_arg, TF_filter_semantics__>>
+                        TF_template_targ_list<>,
+                        TF_template_targ_list<internal::TF_safe_filter_single<F_current_arg, TF_filter_semantics__>>
                     >
                 >;
 
@@ -400,7 +400,7 @@ namespace ncpp {
             template<template<typename F_in__> class TF_filter_semantics__>
             struct TF_filter_helper_internal<-1, TF_filter_semantics__> {
 
-                using F = TF_template_arg_list<>;
+                using F = TF_template_targ_list<>;
 
             };
 
@@ -464,10 +464,10 @@ namespace ncpp {
                 using F_prev_list = typename TF_invert_filter_helper_internal<index__ - 1, TF_invert_filter_semantics__>::F;
 
                 using F = F_prev_list::template TF_combine<
-                    TF_nth_template_arg<
+                    TF_nth_template_targ<
                         internal::T_invert_filter_single<F_current_arg, TF_invert_filter_semantics__>,
-                        TF_template_arg_list<>,
-                        TF_template_arg_list<internal::TF_safe_invert_filter_single<F_current_arg, TF_invert_filter_semantics__>>
+                        TF_template_targ_list<>,
+                        TF_template_targ_list<internal::TF_safe_invert_filter_single<F_current_arg, TF_invert_filter_semantics__>>
                     >
                 >;
 
@@ -476,7 +476,7 @@ namespace ncpp {
             template<template<typename F_in__> class TF_invert_filter_semantics__>
             struct TF_invert_filter_helper_internal<-1, TF_invert_filter_semantics__> {
 
-                using F = TF_template_arg_list<>;
+                using F = TF_template_targ_list<>;
 
             };
 
@@ -534,7 +534,7 @@ namespace ncpp {
 
         public:
             template<template<typename F_in__> class TF_update_semantics__>
-            using TF_update = TF_template_arg_list<typename TF_update_semantics__<F_args__>::F...>;
+            using TF_update = TF_template_targ_list<typename TF_update_semantics__<F_args__>::F...>;
 
             ////////////////////////////////////////////////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////////////////////
@@ -549,9 +549,9 @@ namespace ncpp {
 
 
         template<typename F__>
-        struct TF_to_template_arg_list {
+        struct TF_to_template_targ_list {
 
-            using F = TF_template_arg_list<F__>;
+            using F = TF_template_targ_list<F__>;
 
         };
 

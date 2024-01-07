@@ -33,7 +33,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
 
-#include <ncpp/utilities/first_template_arg.hpp>
+#include <ncpp/utilities/first_template_targ.hpp>
 
 #pragma endregion
 
@@ -74,7 +74,7 @@ namespace ncpp {
 
 
         template<typename F__>
-        using TF_no_deduct = TF_first_template_arg<F__>;
+        using TF_no_deduct = TF_first_template_targ<F__>;
 
     }
 

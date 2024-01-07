@@ -1,8 +1,8 @@
 #pragma once
 
 /**
- *  @file ncpp/utilities/first_template_arg.hpp
- *  @brief Implements first_template_arg_t.
+ *  @file ncpp/utilities/first_template_targ.hpp
+ *  @brief Implements first_template_targ_t.
  */
 
 
@@ -33,7 +33,7 @@
 ////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
 
-#include <ncpp/utilities/nth_template_arg.hpp>
+#include <ncpp/utilities/nth_template_targ.hpp>
 
 #pragma endregion 
 
@@ -78,7 +78,7 @@ namespace ncpp {
          *  @param <F_args__...> template argument list.
          */
         template<typename... F_args__>
-        using TF_first_template_arg = TF_nth_template_arg<0, F_args__...>;
+        using TF_first_template_targ = TF_nth_template_targ<0, F_args__...>;
 
     }
 

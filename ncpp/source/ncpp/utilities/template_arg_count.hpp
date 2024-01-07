@@ -1,8 +1,8 @@
 #pragma once
 
 /**
- *  @file ncpp/utilities/template_arg_count.hpp
- *  @brief Implements template_arg_count_t.
+ *  @file ncpp/utilities/template_targ_count.hpp
+ *  @brief Implements template_targ_count_t.
  */
 
 
@@ -72,7 +72,7 @@ namespace ncpp {
          *  @param <F_args__...> template argument list.
          */
         template<typename... F_args__>
-        static constexpr u16 T_template_arg_count = sizeof...(F_args__);
+        static constexpr u16 T_template_targ_count = sizeof...(F_args__);
 
     }
 
