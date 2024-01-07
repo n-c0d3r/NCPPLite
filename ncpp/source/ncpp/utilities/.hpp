@@ -52,6 +52,8 @@ namespace ncpp {
 ////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
 
+#include <ncpp/template_tricks.hpp>
+
 #include <ncpp/utilities/nth_template_arg.hpp>
 #include <ncpp/utilities/first_template_arg.hpp>
 #include <ncpp/utilities/last_template_arg.hpp>
@@ -97,5 +99,9 @@ namespace ncpp {
 #include <ncpp/utilities/cpass.hpp>
 
 #include <ncpp/utilities/magic.hpp>
+
+#include <ncpp/utilities/smart_cast_member.hpp>
+
+#include <ncpp/utilities/try_class.hpp>
 
 #pragma endregion

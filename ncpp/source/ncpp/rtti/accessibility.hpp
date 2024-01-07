@@ -1,9 +1,8 @@
 #pragma once
 
-/**
- *  @file ncpp/utilities/magic.hpp
- *  @brief Implements magic.
- */
+/** @file ncpp/rtti/accessibility.hpp
+*	@brief Implements accessibility.
+*/
 
 
 
@@ -23,17 +22,11 @@
 
 #pragma region Includes
 
-////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <ncpp/prerequisites.hpp>
-
-////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////
-
-#include <ncpp/containers/pack.hpp>
 
 #pragma endregion
 
@@ -53,17 +46,20 @@
 
 
 
-#define NCPP_MAGIC_EXPAND(MagicType) NCPP_EXPAND(NCPP_MA MagicType)
+namespace ncpp {
 
-#define NCPP_MAGIC_FIRST_PART___LET_FIRST_PART___EXPAND___INTERNAL(FirstPart,...) NCPP_EXPAND(NCPP_MA FirstPart)
-#define NCPP_MAGIC_FIRST_PART___LET_FIRST_PART___INTERNAL(Expanded) NCPP_EXPAND(NCPP_MAGIC_FIRST_PART___LET_FIRST_PART___EXPAND___INTERNAL(Expanded))
-#define NCPP_MAGIC_FIRST_PART___SEPARATE_PARTS___EXPAND___INTERNAL(...) (__VA_ARGS__),
-#define NCPP_MAGIC_FIRST_PART___SEPARATE_PARTS___INTERNAL(MagicType) NCPP_EXPAND(NCPP_MAGIC_FIRST_PART___SEPARATE_PARTS___EXPAND___INTERNAL MagicType)
+    namespace rtti {
 
-#define NCPP_MAGIC_FIRST_PART(MagicType) NCPP_MAGIC_FIRST_PART___LET_FIRST_PART___INTERNAL(NCPP_MAGIC_FIRST_PART___SEPARATE_PARTS___INTERNAL(MagicType))
+        enum class E_accessibility {
 
-#define NCPP_MAGIC_FIRST_TYPE(MagicType) ncpp::containers::TF_pack<NCPP_MAGIC_FIRST_PART(MagicType)>
+            PRIVATE = 0x1,
+            PROTECTED = 0x2,
+            PUBLIC = 0x3,
 
-#define NCPP_MAGIC_SECOND_PART(MagicType) NCPP_EXPAND(NCPP_MA_IGNORE MagicType)
+            DEFAULT = PRIVATE
 
-#define NCPP_MAGIC(MagicType, ...) NCPP_MAGIC_FIRST_TYPE(MagicType) __VA_ARGS__ NCPP_MAGIC_SECOND_PART(MagicType)
+        };
+
+    }
+
+}

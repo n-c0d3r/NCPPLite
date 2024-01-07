@@ -62,6 +62,7 @@ namespace ncpp {
 
 #include <ncpp/rtti/rtti_flag.hpp>
 #include <ncpp/rtti/subtype.hpp>
+#include <ncpp/rtti/accessibility.hpp>
 
 #ifndef NCPP_LITE
 #include <ncpp/rtti/traits.hpp>
