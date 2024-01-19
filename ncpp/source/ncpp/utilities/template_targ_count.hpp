@@ -1,8 +1,8 @@
 #pragma once
 
 /**
- *  @file ncpp/utilities/member_offset.hpp
- *  @brief Implements member offset.
+ *  @file ncpp/utilities/template_targ_count.hpp
+ *  @brief Implements template_targ_count.
  */
 
 
@@ -29,13 +29,7 @@
 
 #include <ncpp/prerequisites.hpp>
 
-////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////
-
-#include <ncpp/utilities/is_function.hpp>
-
-#pragma endregion 
+#pragma endregion
 
 
 
@@ -73,48 +67,12 @@ namespace ncpp {
 
 
 
-        // \cond INTERNAL
-        namespace internal {
-
-            template<b8 is_function__, typename F_class__, typename F_member__>
-            struct TF_member_offset;
-
-            template<typename F_class__, typename F_member__>
-            struct TF_member_offset<false, F_class__, F_member__> {
-
-                static constexpr sz value(F_member__ F_class__::* member)
-                {
-                    return (u8*)&((F_class__*)nullptr->*member) - (u8*)nullptr;
-                }
-
-            };
-
-            template<typename F_class__, typename F_member__>
-            struct TF_member_offset<true, F_class__, F_member__> {
-
-                static constexpr sz value(F_member__ F_class__::* member)
-                {
-                    return 0;
-                }
-
-            };
-
-        }
-        // \endcond
-
-
-
         /**
-         *  Get the offset of indicated class member.
-         *  @param <F_class__>
-         *  @param <member_type__>
-         *  @param member member pointer
+         *  Returns the template argument count.
+         *  @param <F_args__...> template argument list.
          */
-        template<typename F_class__, typename F_member__>
-        static constexpr sz T_member_offset(F_member__ F_class__::* member)
-        {
-            return internal::TF_member_offset<T_is_function<F_member__>, F_class__, F_member__>::value(member);
-        }
+        template<typename... F_args__>
+        static constexpr u16 T_template_targ_count = sizeof...(F_args__);
 
     }
 

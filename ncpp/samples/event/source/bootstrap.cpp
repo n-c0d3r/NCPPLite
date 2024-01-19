@@ -58,13 +58,13 @@ int main() {
 
 		auto listener_handle1 = e_r.T_push_back_listener([](auto& e) {
 
-			std::cout << "Hello Event 1" << std::endl;
+			NCPP_INFO() << "Hello Event 1";
 
 		});
 
 		auto listener_handle2 = e_r.T_push_front_listener([](auto& e) {
 
-			std::cout << "Hello Event 2" << std::endl;
+			NCPP_INFO() << "Hello Event 2";
 
 		});
 

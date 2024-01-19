@@ -172,7 +172,7 @@ namespace ncpp {
 
 			NCPP_FORCE_INLINE F_item pop() {
 
-				assert(size() > 0 && "ring buffer is empty");
+				NCPP_ASSERT(size() > 0) << "ring buffer is empty";
 
 				return std::move(item_vector_[(begin_index_++) % capacity_]);
 			}
@@ -363,7 +363,7 @@ namespace ncpp {
         template<typename F_item__>
         using TG_ring_buffer = TF_ring_buffer<F_item__, mem::F_general_allocator>;
         template<typename F_item__>
-        using TEP_ring_buffer = TF_ring_buffer<F_item__, mem::F_ephemeral_allocator>;
+        using TM_ring_buffer = TF_ring_buffer<F_item__, mem::F_ephemeral_allocator>;
 
         template<typename F_item__>
         using TV_ring_buffer = TF_view<TG_ring_buffer<F_item__>>;

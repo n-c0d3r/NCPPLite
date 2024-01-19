@@ -61,18 +61,44 @@ namespace ncpp {
 
         namespace internal {
 
+            template<typename F__>
+            struct TF_custom_cpass_bind_helper {
+
+                using F = F__;
+
+            };
+
             template<typename F__, bool is_always_mutable__ = false>
             struct TF_cpass_helper {
 
+                static constexpr b8 is_size_over_pointer_size = (T_sizeof<F__> > T_sizeof<void *>);
+                static constexpr b8 is_has_container_allocator = !std::is_same_v<containers::TF_container_allocator<F__>, void>;
+
                 using F = TF_nth_template_targ<
                     (
-                        (T_sizeof<F__> > T_sizeof<void *>)
-                        + !std::is_same_v<containers::TF_container_allocator<F__>, void>
+                        (!std::is_same_v<typename TF_custom_cpass_bind_helper<F__>::F, F__>) ? 3 :
+                        (!is_size_over_pointer_size && !is_has_container_allocator) ? 0 :
+                        (is_has_container_allocator) ? 2 :
+                        1
                     ),
                     F__,
                     const F__ &,
-                    containers::TF_view<F__, is_always_mutable__>
+                    containers::TF_view<F__, is_always_mutable__>,
+                    typename TF_custom_cpass_bind_helper<F__>::F
                 >;
+
+            };
+
+            template<typename F__, bool is_always_mutable__>
+            struct TF_cpass_helper<F__&, is_always_mutable__> {
+
+                using F = F__&;
+
+            };
+            template<typename F__, bool is_always_mutable__>
+            struct TF_cpass_helper<const F__&, is_always_mutable__> {
+
+                using F = const F__&;
 
             };
 
@@ -104,4 +130,25 @@ namespace ncpp {
 
     }
 
+}
+
+
+
+#define NCPP_BIND_CUSTOM_CPASS(FromType, ToType, ...)\
+namespace ncpp::utilities::internal {\
+\
+    template<__VA_ARGS__>\
+    struct TF_custom_cpass_bind_helper<FromType> {\
+\
+        using F = ToType;\
+\
+    };\
+\
+    template<__VA_ARGS__>\
+    struct TF_custom_cpass_bind_helper<FromType const> {\
+\
+        using F = ToType;\
+\
+    };\
+    \
 }

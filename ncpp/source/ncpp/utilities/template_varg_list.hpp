@@ -1,0 +1,628 @@
+#pragma once
+
+/**
+ *  @file ncpp/utilities/template_varg_list.hpp
+ *  @brief Implements template_varg_list.
+ */
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+#pragma region Includes
+
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+
+#include <ncpp/prerequisites.hpp>
+
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+
+#include <ncpp/utilities/nth_template_varg.hpp>
+#include <ncpp/utilities/nth_template_targ.hpp>
+#include <ncpp/utilities/first_template_varg.hpp>
+#include <ncpp/utilities/last_template_varg.hpp>
+
+#pragma endregion
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+namespace ncpp {
+
+    namespace utilities {
+
+        template<auto... args__>
+        struct TF_template_varg_list;
+
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+        namespace internal_varg {
+
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_filter_semantics__>
+            concept T_filter_single = requires {
+
+                requires TF_filter_semantics__<value__, index__>::is_valid;
+
+            };
+
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_filter_semantics__>
+            concept T_filter_single_and_has_custom_type = requires {
+
+                requires T_filter_single<value__, index__, TF_filter_semantics__>;
+                TF_filter_semantics__<value__, index__>::value;
+
+            };
+
+            template<b8 is_valid__, auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_filter_semantics__>
+            struct TF_safe_filter_single_helper;
+
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_filter_semantics__>
+            struct TF_safe_filter_single_helper<false, value__, index__, TF_filter_semantics__> {
+
+                static constexpr auto value = value__;
+
+            };
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_filter_semantics__>
+            struct TF_safe_filter_single_helper<true, value__, index__, TF_filter_semantics__> {
+
+                static constexpr auto value = TF_filter_semantics__<value__, index__>::value;
+
+            };
+
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_filter_semantics__>
+            static constexpr auto T_safe_filter_single = TF_safe_filter_single_helper<
+                T_filter_single_and_has_custom_type<value__, index__, TF_filter_semantics__>,
+                value__,
+                index__,
+                TF_filter_semantics__
+            >::value;
+
+
+
+            template<b8 is_valid__, auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_filter_semantics__>
+            struct TF_invert_filter_helper;
+
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_filter_semantics__>
+            struct TF_invert_filter_helper<false, value__, index__, TF_filter_semantics__> {
+
+                static constexpr auto value = value__;
+
+            };
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_filter_semantics__>
+            struct TF_invert_filter_helper<true, value__, index__, TF_filter_semantics__> {
+
+                static constexpr auto value = value__;
+
+            };
+
+        }
+
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+        namespace internal_varg {
+
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_invert_filter_semantics__>
+            concept T_invert_filter_single = requires {
+
+                requires (!TF_invert_filter_semantics__<value__, index__>::is_valid);
+
+            };
+
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_invert_filter_semantics__>
+            concept T_invert_filter_single_and_has_custom_type = requires {
+
+                requires T_invert_filter_single<value__, index__, TF_invert_filter_semantics__>;
+                TF_invert_filter_semantics__<value__, index__>::value;
+
+            };
+
+            template<b8 is_valid__, auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_invert_filter_semantics__>
+            struct TF_safe_invert_filter_single_helper;
+
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_invert_filter_semantics__>
+            struct TF_safe_invert_filter_single_helper<false, value__, index__, TF_invert_filter_semantics__> {
+
+                static constexpr auto value = value__;
+
+            };
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_invert_filter_semantics__>
+            struct TF_safe_invert_filter_single_helper<true, value__, index__, TF_invert_filter_semantics__> {
+
+                static constexpr auto value = TF_invert_filter_semantics__<value__, index__>::value;
+
+            };
+
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_invert_filter_semantics__>
+            static constexpr auto T_safe_invert_filter_single = TF_safe_invert_filter_single_helper<
+                T_invert_filter_single_and_has_custom_type<value__, index__, TF_invert_filter_semantics__>,
+                value__,
+                index__,
+                TF_invert_filter_semantics__
+            >::value;
+
+
+
+            template<b8 is_valid__, auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_invert_filter_semantics__>
+            struct TF_invert_invert_filter_helper;
+
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_invert_filter_semantics__>
+            struct TF_invert_invert_filter_helper<false, value__, index__, TF_invert_filter_semantics__> {
+
+                static constexpr auto value = value__;
+
+            };
+            template<auto value__, sz index__, template<auto value_in__, sz index_in__> class TF_invert_filter_semantics__>
+            struct TF_invert_invert_filter_helper<true, value__, index__, TF_invert_filter_semantics__> {
+
+                static constexpr auto value = value__;
+
+            };
+
+
+
+            template<auto... value__>
+            struct TF_template_varg_list_first {
+
+                static constexpr auto first = T_nth_template_varg<0, value__...>;
+
+            };
+            template<>
+            struct TF_template_varg_list_first<> {
+
+            };
+
+            template<auto... value__>
+            struct TF_template_varg_list_last {
+
+                static constexpr auto last = T_nth_template_varg<sizeof...(value__) - 1, value__...>;
+
+            };
+            template<>
+            struct TF_template_varg_list_last<> {
+
+            };
+
+        }
+
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+        template<auto... args__>
+        struct TF_template_varg_list :
+                public internal_varg::TF_template_varg_list_first<args__...>,
+                public internal_varg::TF_template_varg_list_last<args__...>
+        {
+
+        public:
+            using F_this = TF_template_varg_list<args__...>;
+
+            constexpr TF_template_varg_list() noexcept {}
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        public:
+            static constexpr u16 count = sizeof...(args__);
+            static constexpr b8 is_empty = (count == 0);
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        private:
+            template<class F__>
+            struct TF_combine_helper_internal_varg;
+
+            template<auto... args2__>
+            struct TF_combine_helper_internal_varg<TF_template_varg_list<args2__...>>{
+
+                using F = TF_template_varg_list<args__..., args2__...>;
+
+            };
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        private:
+            template<sz index__>
+            struct TF_at_internal_varg {
+
+                NCPP_STATIC_ASSERT((index__ < count), "out of bound");
+
+                static constexpr auto value = T_nth_template_varg<index__, args__...>;
+
+            };
+            template<sz index__, auto if_fail__, b8 is_valid__>
+            struct TF_try_at_internal_targ {
+
+                static constexpr auto value = T_nth_template_varg<
+                    is_valid__,
+                    if_fail__,
+                    T_nth_template_varg<is_valid__ ? index__ : 0, args__..., 0>
+                >;
+
+            };
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        public:
+            template<sz index__>
+            static constexpr auto T_at = TF_at_internal_varg<index__>::value;
+            template<sz index__, auto if_fail__ = 0>
+            static constexpr auto T_try_at = TF_try_at_internal_targ<index__, if_fail__, (index__ < count)>::value;
+
+            static constexpr auto try_first = T_try_at<0>;
+            static constexpr auto try_last = T_try_at<(count != 0) ? (count - 1) : 0>;
+
+            template<typename F__>
+            using TF_combine = typename TF_combine_helper_internal_varg<F__>::F;
+
+            template<auto... args2__>
+            using TF_extends = TF_combine<TF_template_varg_list<args2__...>>;
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        public:
+            template<sz count__>
+            using TF_remove_heads = TF_remove_head_template_vargs<count__, args__...>;
+
+            template<sz count__>
+            using TF_remove_tails = TF_remove_tail_template_vargs<count__, args__...>;
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        private:
+            template<i32 begin__, i32 end__>
+            struct TF_slice_internal_varg {
+
+                NCPP_STATIC_ASSERT(
+                    (
+                        (begin__ <= count)
+                        && (begin__ >= 0)
+                        && (end__ <= count)
+                        && (end__ >= 0)
+                        && (begin__ <= end__)
+                    ),
+                    "out of bound"
+                );
+
+                using F = TF_remove_heads<begin__>::template TF_remove_tails<count - end__>;
+
+            };
+            template<i32 begin__, i32 end__>
+            struct TF_try_slice_internal_varg {
+
+                static constexpr i32 clamped_begin = (begin__ <= count) ? begin__ : (count - 1);
+                static constexpr i32 clamped_begin2 = (clamped_begin >= 0) ? clamped_begin : 0;
+                static constexpr i32 clamped_end = (end__ <= count) ? end__ : (count - 1);
+                static constexpr i32 clamped_end2 = (clamped_end >= clamped_begin2) ? clamped_end : clamped_begin2;
+
+                using F = TF_remove_heads<clamped_begin2>::template TF_remove_tails<count - clamped_end2>;
+
+            };
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        public:
+            template<i32 begin__, i32 end__>
+            using TF_slice = typename TF_slice_internal_varg<begin__, end__>::F;
+            template<i32 begin__, i32 end__>
+            using TF_try_slice = typename TF_try_slice_internal_varg<begin__, end__>::F;
+
+            template<i32 begin__, i32 end__>
+            using TF_invert_slice = typename TF_slice_internal_varg<count - end__ - 1, count - begin__ - 1>::F;
+            template<i32 begin__, i32 end__>
+            using TF_try_invert_slice = typename TF_try_slice_internal_varg<count - end__ - 1, count - begin__ - 1>::F;
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        private:
+            template<i32 index__, template<auto value_in__, sz index_in__> class TF_filter_semantics__>
+            struct TF_filter_helper_internal_varg {
+
+                static constexpr auto value_current_arg = T_at<index__>;
+                using F_prev_list = typename TF_filter_helper_internal_varg<index__ - 1, TF_filter_semantics__>::F;
+
+                using F = F_prev_list::template TF_combine<
+                    TF_nth_template_targ<
+                        internal_varg::T_filter_single<value_current_arg, index__, TF_filter_semantics__>,
+                        TF_template_varg_list<>,
+                        TF_template_varg_list<internal_varg::T_safe_filter_single<value_current_arg, index__, TF_filter_semantics__>>
+                    >
+                >;
+
+            };
+
+            template<template<auto value_in__, sz index_in__> class TF_filter_semantics__>
+            struct TF_filter_helper_internal_varg<-1, TF_filter_semantics__> {
+
+                using F = TF_template_varg_list<>;
+
+            };
+
+            template<template<auto value_in__, sz index_in__> class TF_filter_semantics__>
+            using TF_filter_single_internal_varg = typename TF_filter_helper_internal_varg<count - 1, TF_filter_semantics__>::F;
+
+            template<typename F_list__, template<auto value_in__, sz index_in__> class... TF_multiple_filter_semantics__>
+            struct TF_filter_multiple_semantics_helper_internal_varg;
+            template<typename F_list__>
+            struct TF_filter_multiple_semantics_helper_internal_varg<F_list__> {
+
+                using F = F_list__;
+
+            };
+            template<
+                typename F_list__,
+                template<auto value_in__, sz index_in__> class TF_first_filter_semantics__,
+                template<auto value_in__, sz index_in__> class... TF_rest_multiple_filter_semantics__
+            >
+            struct TF_filter_multiple_semantics_helper_internal_varg<
+                F_list__,
+                TF_first_filter_semantics__,
+                TF_rest_multiple_filter_semantics__...
+            >
+            {
+
+                using F_filtered_list = F_list__::template TF_filter_single_internal_varg<TF_first_filter_semantics__>;
+                using F = typename TF_filter_multiple_semantics_helper_internal_varg<
+                    F_filtered_list,
+                    TF_rest_multiple_filter_semantics__...
+                >::F;
+
+            };
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        public:
+            template<template<auto value_in__, sz index_in__> class... TF_multiple_filter_semantics__>
+            using TF_filter = typename TF_filter_multiple_semantics_helper_internal_varg<
+                F_this,
+                TF_multiple_filter_semantics__...
+            >::F;
+
+            template<template<auto value_in__, sz index_in__> class... TF_multiple_filter_semantics__>
+            using TF_find = TF_filter<TF_multiple_filter_semantics__...>::template TF_try_slice<0, 1>;
+
+            template<template<auto value_in__, sz index_in__> class... TF_multiple_filter_semantics__>
+            using TF_find_last = TF_filter<TF_multiple_filter_semantics__...>::template TF_try_invert_slice<0, 1>;
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        private:
+            template<i32 index__, template<auto value_in__, sz index_in__> class TF_invert_filter_semantics__>
+            struct TF_invert_filter_helper_internal_varg {
+
+                static constexpr auto value_current_arg = T_at<index__>;
+                using F_prev_list = typename TF_invert_filter_helper_internal_varg<index__ - 1, TF_invert_filter_semantics__>::F;
+
+                using F = F_prev_list::template TF_combine<
+                    TF_nth_template_targ<
+                        internal_varg::T_invert_filter_single<value_current_arg, index__, TF_invert_filter_semantics__>,
+                        TF_template_varg_list<>,
+                        TF_template_varg_list<internal_varg::T_safe_invert_filter_single<value_current_arg, index__, TF_invert_filter_semantics__>>
+                    >
+                >;
+
+            };
+
+            template<template<auto value_in__, sz index_in__> class TF_invert_filter_semantics__>
+            struct TF_invert_filter_helper_internal_varg<-1, TF_invert_filter_semantics__> {
+
+                using F = TF_template_varg_list<>;
+
+            };
+
+            template<template<auto value_in__, sz index_in__> class TF_invert_filter_semantics__>
+            using TF_invert_filter_single_internal_varg = typename TF_invert_filter_helper_internal_varg<count - 1, TF_invert_filter_semantics__>::F;
+
+            template<typename F_list__, template<auto value_in__, sz index_in__> class... TF_multiple_invert_filter_semantics__>
+            struct TF_invert_filter_multiple_semantics_helper_internal_varg;
+            template<typename F_list__>
+            struct TF_invert_filter_multiple_semantics_helper_internal_varg<F_list__> {
+
+                using F = F_list__;
+
+            };
+            template<
+                typename F_list__,
+                template<auto value_in__, sz index_in__> class TF_first_invert_filter_semantics__,
+                template<auto value_in__, sz index_in__> class... TF_rest_multiple_invert_filter_semantics__
+            >
+            struct TF_invert_filter_multiple_semantics_helper_internal_varg<
+                F_list__,
+                TF_first_invert_filter_semantics__,
+                TF_rest_multiple_invert_filter_semantics__...
+            >
+            {
+
+                using F_filtered_list = F_list__::template TF_invert_filter_single_internal_varg<TF_first_invert_filter_semantics__>;
+                using F = typename TF_invert_filter_multiple_semantics_helper_internal_varg<
+                    F_filtered_list,
+                    TF_rest_multiple_invert_filter_semantics__...
+                >::F;
+
+            };
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        public:
+            template<template<auto value_in__, sz index_in__> class... TF_multiple_invert_filter_semantics__>
+            using TF_invert_filter = typename TF_invert_filter_multiple_semantics_helper_internal_varg<
+                F_this,
+                TF_multiple_invert_filter_semantics__...
+            >::F;
+
+            template<template<auto value_in__, sz index_in__> class... TF_multiple_filter_semantics__>
+            using TF_invert_find = TF_invert_filter<TF_multiple_filter_semantics__...>::template TF_try_slice<0, 1>;
+
+            template<template<auto value_in__, sz index_in__> class... TF_multiple_filter_semantics__>
+            using TF_invert_find_last = TF_invert_filter<TF_multiple_filter_semantics__...>::template TF_try_invert_slice<0, 1>;
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        private:
+            template<template<auto value_in__, sz index_in__> class TF_update_semantics__>
+            struct TF_make_update_filter {
+
+                template<auto value_in__, sz index_in__>
+                struct TL : public TF_update_semantics__<value_in__, index_in__> {
+
+                    static constexpr b8 is_valid = true;
+
+                };
+
+            };
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        public:
+            template<template<auto value_in__, sz index_in__> class TF_update_semantics__>
+            using TF_update = TF_filter<TF_make_update_filter<TF_update_semantics__>::template TL>;
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        public:
+            template<template<auto...> class TF__>
+            using TF_apply = TF__<args__...>;
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        private:
+            template<auto value_in__, sz index_in__>
+            struct TL_remove_repeats {
+
+                template<auto value_in_2__, sz index_in_2__>
+                struct TL_same {
+
+                    static constexpr b8 is_valid = (value_in__ == value_in_2__) && (index_in_2__ <= index_in__);
+
+                };
+
+                static constexpr b8 is_valid = (TF_filter<TL_same>::count == 1);
+
+            };
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        public:
+            using F_remove_repeats = TF_filter<TL_remove_repeats>;
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////
+
+        public:
+            using F_indices = TF_make_varg_range<count>;
+
+        };
+
+
+
+        template<typename F__>
+        struct TF_to_template_varg_list {
+
+            using F = TF_template_varg_list<>;
+
+        };
+
+    }
+
+}

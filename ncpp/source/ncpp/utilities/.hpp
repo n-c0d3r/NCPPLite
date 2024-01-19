@@ -59,6 +59,13 @@ namespace ncpp {
 #include <ncpp/utilities/last_template_targ.hpp>
 #include <ncpp/utilities/template_targ_count.hpp>
 #include <ncpp/utilities/template_targ_list.hpp>
+#include <ncpp/utilities/template_targ_tree.hpp>
+
+#include <ncpp/utilities/nth_template_varg.hpp>
+#include <ncpp/utilities/first_template_varg.hpp>
+#include <ncpp/utilities/last_template_varg.hpp>
+#include <ncpp/utilities/template_varg_count.hpp>
+#include <ncpp/utilities/template_varg_list.hpp>
 
 #include <ncpp/utilities/no_deduct.hpp>
 
@@ -81,9 +88,8 @@ namespace ncpp {
 
 #include <ncpp/utilities/iterator.hpp>
 
+#include <ncpp/utilities/alignof.hpp>
 #include <ncpp/utilities/sizeof.hpp>
-
-#include <ncpp/utilities/defer.hpp>
 
 #include <ncpp/utilities/key_type.hpp>
 #include <ncpp/utilities/value_type.hpp>

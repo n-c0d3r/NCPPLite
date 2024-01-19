@@ -22,9 +22,15 @@ NCoder's Game Engine Learning Aimed C++ Library.
   + Initialier_list
   + **Convenient coloring**
   + ...
++ Object:
+    + **⚠️ Warning**: `not avaiable on NCPP Lite Distribution`
+    + **Unique pointer**
+    + **Shared pointer**
+    + **Keyed pointer**
+    + **Weak pointer**
 + Utilities:
   + **Magic type syntax** for both variables and functions: `(F_returns...)(F_arguments...)`
-  + **Constant pass** (optimized constant variable passing)
+  + **Constant passing** (optimized and flexible constant variable passing)
   + N-th template argument getter
   + Function traits
   + Is derived from checker
@@ -39,7 +45,7 @@ NCoder's Game Engine Learning Aimed C++ Library.
     + **⚠️ Warning**: `not avaiable on NCPP Lite Distribution`
     + Easy to use
     + No additional memory cost on reflected object
-    + Metadata supports 
+    + Metadata supports
     + Fast compilation
     + Flexible and highly customizable
 
